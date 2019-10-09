@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import SeasonDisplay from './SeasonDisplay';
+import Spinner from './Spinner';
 
 export default class App extends Component {
   constructor(props) {
@@ -9,15 +11,19 @@ export default class App extends Component {
     this.state = { lat: null, errorMessage: "" };    
   }
 
+
+  //We can use this without constructor.
+  // state = { lat: null, errorMessage: ''};
+
   render() {
     if (this.state.errorMessage && !this.state.lat) {
       return <div> Error: {this.state.errorMessage} </div>;
     }
 
     if (!this.state.errorMessage && this.state.lat) {
-      return <div> Latitude: {this.state.lat} </div>;
+      return <div> <SeasonDisplay lat = {this.state.lat}/> </div>;
     }
-    return <div> Loading ... </div>;
+    return <div> <Spinner message="por favor acepte el gps"/></div>;
   }
 
   componentDidMount(){
