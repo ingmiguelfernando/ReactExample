@@ -1,8 +1,8 @@
 import React from 'react'
-
+//Controlled component.
 class SearchBar extends React.Component {
     state = { term: '' };
-
+    // el problema del .this se puede solucionar poniendo esta funcion en forma => o el llamado a la función.
     onFormSubmit(event){
         event.preventDefault();
         this.props.onSubmit(this.state.term);
@@ -24,7 +24,7 @@ class SearchBar extends React.Component {
             </div>
         );
     }
-
+ 
 };
 
 export default SearchBar;
