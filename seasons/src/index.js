@@ -1,46 +1,33 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import SeasonDisplay from './SeasonDisplay';
 import Spinner from './Spinner';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    //THIS IS THE ONLY TIME we do direct assignment
-    // to this.state
-    this.state = { lat: null, errorMessage: "" };    
+class App extends React.Component {
+  state = { lat: null, errorMessage: '' };
+
+  componentDidMount() {
+    window.navigator.geolocation.getCurrentPosition(
+      position => this.setState({ lat: position.coords.latitude }),
+      err => this.setState({ errorMessage: err.message })
+    );
   }
 
-
-  //We can use this without constructor.
-  // state = { lat: null, errorMessage: ''};
-
-  render() {
+  renderContent() {
     if (this.state.errorMessage && !this.state.lat) {
-      return <div> Error: {this.state.errorMessage} </div>;
+      return <div>Error: {this.state.errorMessage}</div>;
     }
 
     if (!this.state.errorMessage && this.state.lat) {
-      return <div> <SeasonDisplay lat = {this.state.lat}/> </div>;
+      return <SeasonDisplay lat={this.state.lat} />;
     }
-    return <div> <Spinner message="por favor acepte el gps"/></div>;
+
+    return <Spinner message="Please accept location request" />;
   }
 
-  componentDidMount(){
-    this.getPosition();
-  }
-
-  getPosition() {
-    window.navigator.geolocation.getCurrentPosition(
-      position => {
-        // We called setstate!!!!
-        this.setState({ lat: position.coords.latitude });
-      },
-      err => {
-        this.setState({ errorMessage: err.message });
-      }
-    );
+  render() {
+    return <div className="border red">{this.renderContent()}</div>;
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.querySelector('#root'));
